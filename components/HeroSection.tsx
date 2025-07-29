@@ -30,7 +30,7 @@ export default function HeroSection() {
         }}
       >
         {/* MAIN LINE */}
-        <h1 className="font-bold text-[36px] md:text-[56px] lg:text-[70px] leading-[1.1] mb-5 font-farro tracking-tight">
+        <h1 className="font-bold text-[36px] md:text-[56px] lg:text-[70px] leading-[1.1] mb-5 font-clash tracking-tight">
   UNMANNED.<br />
   UNMATCHED.<br />
   UNCOMPROMISED.

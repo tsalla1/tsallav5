@@ -27,7 +27,7 @@ export default function AboutUsVideoPage() {
 
       {/* Text & CTA */}
       <div className="relative z-20 max-w-6xl px-6 md:px-12 lg:px-16">
-        <h1 className="font-bold text-[36px] md:text-[56px] lg:text-[70px] leading-[1.1] mb-5 font-farro tracking-tight">
+        <h1 className="font-bold text-[36px] md:text-[56px] lg:text-[70px] leading-[1.1] mb-5 font-clash tracking-tight">
           ABOUT US
         </h1>
 

@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${farro.variable}`}>
+    <html lang="en" className={`${inter.variable}`}>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&display=swap"
@@ -38,10 +38,12 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Pontano+Sans:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
         />
+        <link href="https://fonts.googleapis.com/css2?family=Orbit&display=swap" rel="stylesheet" />
+        <link href="https://fonts.cdnfonts.com/css/clash-grotesk" rel="stylesheet" />
       </head>
-      <body className="bg-black text-white font-farro">
+      <body className="bg-black text-white font-clash">
         <Navbar />
-        <main className="min-h-screen">{children}</main>
+        <main className="min-h-screen w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">{children}</main>
         <Footer />
       </body>
     </html>
