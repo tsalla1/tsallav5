@@ -39,30 +39,30 @@ export default function UncrewedSystemsPage() {
 
   return (
     <PageWrapper>
-      <div className="pt-24 pb-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">Uncrewed Systems</h1>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+      <div className="section-spacing">
+        <div className="responsive-container">
+          <div className="text-center mb-12 lg:mb-16">
+            <h1 className="heading-primary mb-6 font-clash">Uncrewed Systems</h1>
+            <p className="text-body text-gray-400 max-w-3xl mx-auto font-clash">
               Next-generation uncrewed systems that think, adapt, and execute missions with unprecedented autonomy.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-16">
+          <div className="grid-responsive-2 mb-12 lg:mb-16">
             {systems.map((system) => (
               <Card
                 key={system.name}
                 className="bg-gray-900 border-gray-800 hover:border-blue-500 transition-colors group"
               >
                 <CardHeader>
-                  <CardTitle className="text-white text-2xl">{system.name}</CardTitle>
-                  <CardDescription className="text-blue-400">{system.description}</CardDescription>
+                  <CardTitle className="text-white heading-tertiary font-clash">{system.name}</CardTitle>
+                  <CardDescription className="text-blue-400 text-body font-clash">{system.description}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-300 mb-4">{system.details}</p>
+                  <p className="text-gray-300 mb-6 text-small font-clash">{system.details}</p>
                   <Link
                     href={system.href}
-                    className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors group-hover:translate-x-1 duration-300"
+                    className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors group-hover:translate-x-1 duration-300 font-clash"
                   >
                     Learn More
                     <ArrowRight size={16} />

@@ -7,5 +7,9 @@ interface PageWrapperProps {
 }
 
 export default function PageWrapper({ children, className = "", hasHero = false }: PageWrapperProps) {
-  return <div className={`min-h-screen bg-black text-white ${hasHero ? "" : "pt-20"} ${className}`}>{children}</div>
+  return (
+    <div className={`min-h-screen bg-black text-white font-clash ${hasHero ? "" : "pt-20"} ${className}`}>
+      {children}
+    </div>
+  )
 }

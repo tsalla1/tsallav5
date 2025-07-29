@@ -38,8 +38,16 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Pontano+Sans:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
         />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Orbit:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Clash+Grotesk:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
       </head>
-      <body className="bg-black text-white font-farro">
+      <body className="bg-black text-white font-clash">
         <Navbar />
         <main className="min-h-screen">{children}</main>
         <Footer />

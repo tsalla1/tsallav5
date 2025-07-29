@@ -26,37 +26,30 @@ export default function CommitmentSection() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="pt-48 pb-40 bg-black text-white overflow-hidden">
-      <div className="w-full px-6 md:px-12 xl:px-24 max-w-[1440px] mx-auto flex flex-col md:flex-row gap-20 items-start">
+    <section ref={sectionRef} className="section-spacing bg-black text-white overflow-hidden">
+      <div className="responsive-container grid-responsive-2 items-start">
         {/* Left Column */}
-        <div className="max-w-[600px] flex flex-col justify-start">
-      <h2
-  className={`text-white/70 tracking-widest uppercase mb-6 transition-all duration-700 ease-out transform text-2xl font-light font-inter ${
-    isVisible ? "opacity-90 translate-y-0" : "opacity-0 translate-y-16"
-  }`}
->
-  WHERE WE’RE HEADED
-</h2>
+        <div className="flex flex-col justify-start">
+          <h2
+            className={`text-white/70 tracking-widest uppercase mb-6 sm:mb-8 transition-all duration-700 ease-out transform text-xl sm:text-2xl font-light font-clash ${
+              isVisible ? "opacity-90 translate-y-0" : "opacity-0 translate-y-16"
+            }`}
+          >
+            WHERE WE'RE HEADED
+          </h2>
 
-         <h3
-  className={`transition-all duration-700 ease-out transform ${
-    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
-  }`}
-  style={{
-    transitionDelay: "150ms",
-    fontFamily: "Inter, sans-serif",
-    fontSize: "35px",
-    lineHeight: "1.5",
-    fontWeight: 500,
-  }}
->
-  Creating intelligent systems to elevate autonomy and empower unmatched performance on every front.
-</h3>
-
+          <h3
+            className={`heading-secondary font-clash font-medium transition-all duration-700 ease-out transform ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
+            }`}
+            style={{ transitionDelay: "150ms" }}
+          >
+            Creating intelligent systems to elevate autonomy and empower unmatched performance on every front.
+          </h3>
         </div>
 
         {/* Right Column */}
-        <div className="max-w-[500px] space-y-4 text-[15px] text-white/90 flex flex-col justify-start pt-[65px] font-extralight font-['Inter']">
+        <div className="space-y-responsive text-small text-white/90 flex flex-col justify-start pt-0 md:pt-16 font-light font-clash">
           <p
             className={`transition-all duration-700 ease-out transform ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
@@ -68,7 +61,7 @@ export default function CommitmentSection() {
 
           <p
             className={`transition-all duration-700 ease-out transform ${
-              isVisible ? "opacity-100 translate-y-4" : "opacity-0 translate-y-16"
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
             }`}
             style={{ transitionDelay: "450ms" }}
           >
@@ -79,8 +72,8 @@ export default function CommitmentSection() {
 
           <Link
             href="/careers"
-            className={`group inline-flex items-center font-medium text-[20px] text-gray-300 transition-all duration-700 ease-out transform font-['Chakra_Petch'] ${
-              isVisible ? "opacity-100 translate-y-7" : "opacity-0 translate-y-16"
+            className={`group inline-flex items-center font-medium text-lg sm:text-xl text-gray-300 transition-all duration-700 ease-out transform font-clash ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
             }`}
             style={{ transitionDelay: "600ms" }}
           >
