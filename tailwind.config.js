@@ -91,6 +91,8 @@ module.exports = {
         anton: ['"Anton"', "sans-serif"],
         chakra: ['"Chakra Petch"', "sans-serif"],
         pontano: ['"Pontano Sans"', "sans-serif"],
+        orbit: ['Orbit', 'sans-serif'],
+        clash: ['Clash Grotesk', 'sans-serif'],
       },
     },
   },

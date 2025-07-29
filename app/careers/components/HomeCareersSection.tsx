@@ -18,7 +18,7 @@ const dummyImages = [
 
 export default function HomeCareersSection() {
   return (
-    <section className="bg-black text-white font-farro">
+    <section className="bg-black text-white font-clash">
       {/* Hero Section */}
       <div className="pt-40 pb-12 text-center px-4">
         <h1 className="text-4xl md:text-6xl mb-4 font-bold uppercase tracking-tight">
