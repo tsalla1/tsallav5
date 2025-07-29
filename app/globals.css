@@ -409,3 +409,56 @@ video[data-loading="true"] {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
+
+/* Responsive container with consistent padding */
+.responsive-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16;
+}
+
+/* Responsive section spacing */
+.section-spacing {
+  @apply py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32;
+}
+
+/* Responsive text sizes */
+.heading-primary {
+  @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight;
+}
+
+.heading-secondary {
+  @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight;
+}
+
+.heading-tertiary {
+  @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight;
+}
+
+.text-body {
+  @apply text-base sm:text-lg md:text-xl leading-relaxed;
+}
+
+.text-small {
+  @apply text-sm sm:text-base leading-relaxed;
+}
+
+/* Grid layouts */
+.grid-responsive-2 {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12;
+}
+
+.grid-responsive-3 {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8;
+}
+
+.grid-responsive-4 {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8;
+}
+
+/* Consistent spacing utilities */
+.space-y-responsive {
+  @apply space-y-6 md:space-y-8 lg:space-y-12;
+}
+
+.gap-responsive {
+  @apply gap-6 md:gap-8 lg:gap-12;
+}

@@ -201,7 +201,7 @@ export default function Navbar() {
   }
 
   return (
-    <>
+    <div className="font-orbit">
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300
           ${isVisible ? "translate-y-0" : "-translate-y-full"}
@@ -209,19 +209,19 @@ export default function Navbar() {
         `}
       >
         <div className="w-full">
-          <div className="flex items-center justify-between h-20 border-b border-white/100 px-4">
-            <Link href="/" className="flex items-center z-50 pl-4 lg:ml-12">
+          <div className="flex items-center justify-between h-16 sm:h-18 md:h-20 border-b border-white/100 px-4 sm:px-6 md:px-8">
+            <Link href="/" className="flex items-center z-50 pl-0 sm:pl-2 lg:pl-4 xl:ml-8">
               <Image
                 src="/tsalla_logo2.svg"
                 alt="Tsalla Aerospace"
                 width={260}
                 height={70}
-                className="h-12 sm:h-14 md:h-16 w-auto brightness-150 contrast-125"
+                className="h-10 sm:h-12 md:h-14 lg:h-16 w-auto brightness-150 contrast-125"
                 priority
               />
             </Link>
 
-            <div className="hidden lg:flex items-center h-full border-l border-white/30 pr-14">
+            <div className="hidden lg:flex items-center h-full border-l border-white/30 pr-6 xl:pr-14">
               {navigationItems.map((item, index) => (
                 <div
                   key={item.name}
@@ -232,13 +232,13 @@ export default function Navbar() {
                   <Link
                     href={item.href}
                     className={`
-                      px-6 text-sm font-medium tracking-wider transition-colors h-full flex items-center
+                      px-3 xl:px-6 text-xs xl:text-sm font-medium tracking-wider transition-colors h-full flex items-center
                       ${index < navigationItems.length - 1 ? "border-r border-white/30" : ""}
                       ${activeMegaMenu === item.href ? "bg-white/10" : ""}
                     `}
                   >
                     <span
-                      className={`animated-underline font-mono font-normal ${
+                      className={`animated-underline font-normal ${
                         pathname === item.href ? "text-blue-400" : "text-white hover:text-blue-400"
                       }`}
                     >
@@ -385,6 +385,6 @@ export default function Navbar() {
           </div>
         </div>
       )}
-    </>
+    </div>
   )
 }

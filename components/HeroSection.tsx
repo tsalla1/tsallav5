@@ -22,37 +22,31 @@ export default function HeroSection() {
       </video>
 
       {/* Content block */}
-      <div
-        className="absolute z-20 px-4 w-full max-w-[1182px] flex flex-col items-start justify-start"
-        style={{
-          top: "200px",
-          left: "65px",
-        }}
-      >
+      <div className="absolute z-20 responsive-container flex flex-col items-start justify-start top-32 sm:top-40 md:top-48 lg:top-56 xl:top-64 left-0 right-0">
         {/* MAIN LINE */}
-        <h1 className="font-bold text-[36px] md:text-[56px] lg:text-[70px] leading-[1.1] mb-5 font-farro tracking-tight">
-  UNMANNED.<br />
-  UNMATCHED.<br />
-  UNCOMPROMISED.
-</h1>
+        <h1 className="heading-primary mb-4 sm:mb-6 font-clash tracking-tight">
+          UNMANNED.<br />
+          UNMATCHED.<br />
+          UNCOMPROMISED.
+        </h1>
 
         {/* SECOND LINE */}
-        <p className="text-base sm:text-sm sm:text-base md:text-lg lg:text-xl mb-1 font-pontano text-white max-w-[90%]">
-          We Don’t Build Drones. We Build Unfair Advantages.
+        <p className="text-body mb-4 sm:mb-6 font-clash text-white max-w-2xl">
+          We Don't Build Drones. We Build Unfair Advantages.
         </p>
 
         {/* THIRD LINE */}
- <Link
-  href="/about"
-  className="
-    inline-block bg-transparent border border-white text-white
-    hover:bg-white hover:text-black
-    px-4 py-2 mt-3 transition-colors duration-200
-    font-sans text-sm md:text-base
-  "
->
-  Learn More
-</Link>
+        <Link
+          href="/about"
+          className="
+            inline-block bg-transparent border border-white text-white
+            hover:bg-white hover:text-black
+            px-6 py-3 sm:px-8 sm:py-4 mt-2 transition-colors duration-200
+            font-clash text-sm sm:text-base
+          "
+        >
+          Learn More
+        </Link>
       </div>
     </section>
   )
