@@ -65,21 +65,6 @@ export default function Dexter1(): JSX.Element {
       description: "Designed to operate in GPS-denied and comms-contested environments.",
       imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/641de74487cf8d3c116abd5924ab673367516bb2-2000x2500.jpg?auto=format&fit=max&w=1920&q=90",
     },
-    {
-      title: "Urban Recon",
-      description: "Navigate complex urban terrain with precision and stealth.",
-      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/8801921308d204efa9bf03a05503df326916b847-3642x2049.png?auto=format&fit=max&w=1920&q=90",
-    },
-    {
-      title: "Environmental Monitoring",
-      description: "Track changes in forests, oceans, and deserts to inform policy and response.",
-      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/9ac1a07d3b84827ba687a8a9281ed48b31458e49-1920x1080.png?auto=format&fit=max&w=1920&q=90",
-    },
-    {
-      title: "Tactical Edge",
-      description: "Designed to operate in GPS-denied and comms-contested environments.",
-      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/641de74487cf8d3c116abd5924ab673367516bb2-2000x2500.jpg?auto=format&fit=max&w=1920&q=90",
-    },
   ];
 
   // Group profiles into pages of 3
