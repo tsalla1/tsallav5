@@ -53,6 +53,36 @@ export default function Dexter1(): JSX.Element {
       description: "Delivers high-resolution intelligence and real-time situational awareness for critical ISR missions.",
       imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/8801921308d204efa9bf03a05503df326916b847-3642x2049.png?auto=format&fit=max&w=1920&q=90",
     },
+    {
+      title: "Disaster Response",
+      description: "Rapidly deliver support for real-time situational awareness and coordination in disaster relief operations.",
+      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/9ac1a07d3b84827ba687a8a9281ed48b31458e49-1920x1080.png?auto=format&fit=max&w=1920&q=90",
+    },
+    {
+      title: "ISR Missions",
+      description: "Delivers high-resolution intelligence and real-time situational awareness for critical ISR missions.",
+      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/8801921308d204efa9bf03a05503df326916b847-3642x2049.png?auto=format&fit=max&w=1920&q=90",
+    },
+    {
+      title: "Disaster Response",
+      description: "Rapidly deliver support for real-time situational awareness and coordination in disaster relief operations.",
+      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/9ac1a07d3b84827ba687a8a9281ed48b31458e49-1920x1080.png?auto=format&fit=max&w=1920&q=90",
+    },
+    {
+      title: "ISR Missions",
+      description: "Delivers high-resolution intelligence and real-time situational awareness for critical ISR missions.",
+      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/8801921308d204efa9bf03a05503df326916b847-3642x2049.png?auto=format&fit=max&w=1920&q=90",
+    },
+    {
+      title: "Disaster Response",
+      description: "Rapidly deliver support for real-time situational awareness and coordination in disaster relief operations.",
+      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/9ac1a07d3b84827ba687a8a9281ed48b31458e49-1920x1080.png?auto=format&fit=max&w=1920&q=90",
+    },
+    {
+      title: "ISR Missions",
+      description: "Delivers high-resolution intelligence and real-time situational awareness for critical ISR missions.",
+      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/8801921308d204efa9bf03a05503df326916b847-3642x2049.png?auto=format&fit=max&w=1920&q=90",
+    },
   ];
 
   useEffect(() => {
