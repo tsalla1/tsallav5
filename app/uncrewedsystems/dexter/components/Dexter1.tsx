@@ -30,13 +30,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ title, description, imageUrl 
   );
 };
 
-// The main component, updated for horizontal scrolling.
+// The main component, updated for paginated horizontal scrolling.
 export default function Dexter1(): JSX.Element {
-  // Refs for the scroll container and the horizontal track.
   const containerRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  // Use a ref to track the current page index without causing re-renders.
+  const currentIndex = useRef(0);
 
-  // Data for the mission profile cards remains the same.
   const profiles: ProfileCardProps[] = [
     {
       title: "Border Surveillance",
@@ -60,35 +60,38 @@ export default function Dexter1(): JSX.Element {
     const track = trackRef.current;
     if (!container || !track) return;
 
-    // This variable will hold the current horizontal scroll position.
-    let scrollPosition = 0;
+    // A flag to prevent rapid-fire scrolling while a transition is active.
+    let isScrolling = false;
+    const scrollCooldown = 700; // Must be same or more than the CSS transition duration.
+
+    const pages = Array.from(track.children) as HTMLElement[];
+    // Calculate the horizontal start position (snap point) for each page.
+    const snapPoints = pages.map(page => page.offsetLeft);
 
     const handleWheel = (e: WheelEvent) => {
-      // e.deltaY gives the vertical scroll amount. We add it to our horizontal scroll position.
-      scrollPosition += e.deltaY;
+      // If a scroll animation is already in progress, do nothing.
+      if (isScrolling) return;
 
-      // Calculate the maximum scrollable distance.
-      const maxScroll = track.scrollWidth - container.clientWidth;
+      const scrollDirection = e.deltaY > 0 ? 1 : -1; // 1 for down/right, -1 for up/left
+      const newIndex = currentIndex.current + scrollDirection;
 
-      // Clamp the scroll position to be within the bounds [0, maxScroll].
-      if (scrollPosition < 0) {
-        scrollPosition = 0;
+      // Check if the new page index is within the valid range.
+      if (newIndex >= 0 && newIndex < pages.length) {
+        // Set the scrolling flag to true to start the cooldown.
+        isScrolling = true;
+        currentIndex.current = newIndex;
+        // Move the track to the calculated snap point of the new page.
+        track.style.transform = `translateX(-${snapPoints[currentIndex.current]}px)`;
+
+        // After the animation finishes, reset the flag.
+        setTimeout(() => {
+          isScrolling = false;
+        }, scrollCooldown);
       }
-      if (scrollPosition > maxScroll) {
-        scrollPosition = maxScroll;
-      }
-
-      // Apply the horizontal scroll using a CSS transform.
-      track.style.transform = `translateX(-${scrollPosition}px)`;
     };
 
-    // Add the wheel event listener. The { passive: false } option is not needed here.
     container.addEventListener('wheel', handleWheel);
-
-    // Cleanup function to remove the event listener when the component unmounts.
-    return () => {
-      container.removeEventListener('wheel', handleWheel);
-    };
+    return () => container.removeEventListener('wheel', handleWheel);
   }, []);
 
   return (
@@ -99,42 +102,33 @@ export default function Dexter1(): JSX.Element {
           font-family: 'Clash Grotesk', sans-serif;
         }
       `}</style>
-      
-      {/* The main section is now the scroll container. 
-        - h-screen: Sets height to 100% of the viewport.
-        - overflow-hidden: Hides the default scrollbar.
-      */}
+
       <section ref={containerRef} className="font-clash-grotesk bg-black text-white w-full h-screen overflow-hidden">
-        {/* The track holds all the content and moves horizontally.
-          - flex, h-full, items-center: Aligns all children in a horizontal row.
-          - transition, ease-out: Provides a smooth scrolling animation.
-          - pl-[...]: Adds padding to center the header initially.
-        */}
-        <div ref={trackRef} className="flex h-full items-center transition-transform duration-500 ease-out pl-[calc(50vw-450px)]">
-          
-          {/* Header Section: Now a flex item within the horizontal track. */}
-          <div className="flex-shrink-0 w-[900px] pr-20">
-            <h1 className="text-7xl font-medium tracking-tight">
-              Mission Profiles
-            </h1>
-            <p className="text-xl text-gray-400 mt-4">
-              Engineered for reliability in critical scenarios.
-            </p>
+        {/* The track now has a longer, smoother transition for the page-snap effect. */}
+        <div ref={trackRef} className="flex h-full items-center relative transition-transform duration-700 ease-in-out">
+
+          {/* Page 1: The Header. It now takes the full screen width to act as a distinct page. */}
+          <div className="flex-shrink-0 w-screen h-full flex items-center justify-center">
+            <div className="text-left w-full max-w-7xl px-8 sm:px-16 lg:px-24">
+              <h1 className="text-7xl font-medium tracking-tight">
+                Mission Profiles
+              </h1>
+              <p className="text-xl text-gray-400 mt-4 max-w-lg">
+                Engineered for reliability in critical scenarios.
+              </p>
+            </div>
           </div>
 
-          {/* Profiles Section: Mapped cards are now flex items. */}
-          <div className="flex items-center gap-8">
-            {profiles.map((profile) => (
-              // Each card container has a fixed width to ensure the track's total width is predictable.
-              <div key={profile.title} className="flex-shrink-0 w-[400px]">
-                <ProfileCard
-                  title={profile.title}
-                  description={profile.description}
-                  imageUrl={profile.imageUrl}
-                />
-              </div>
-            ))}
-          </div>
+          {/* Subsequent Pages: The Profile Cards. We add padding to space them out correctly. */}
+          {profiles.map((profile) => (
+            <div key={profile.title} className="flex-shrink-0 w-[450px] px-10">
+              <ProfileCard
+                title={profile.title}
+                description={profile.description}
+                imageUrl={profile.imageUrl}
+              />
+            </div>
+          ))}
         </div>
       </section>
     </>
