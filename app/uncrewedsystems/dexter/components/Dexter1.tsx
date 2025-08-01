@@ -1,197 +1,166 @@
-// app/mission-profiles/page.tsx
-"use client";
+import React, { useRef, useEffect } from 'react';
 
-import { useEffect, useRef } from "react";
-import LocomotiveScroll from "locomotive-scroll";
-import "locomotive-scroll/dist/locomotive-scroll.css";
+// The ProfileCard component remains unchanged as it's a presentational component.
+interface ProfileCardProps {
+  title: string;
+  description: string;
+  imageUrl: string;
+}
 
-const sections = [
-  { id: "home", title: "Home", number: "01", content: "Home content here..." },
-  { id: "collection", title: "Collection", number: "02", content: "Collection details..." },
-  { id: "material", title: "Material", number: "03", content: "Material info..." },
-  { id: "production", title: "Production", number: "04", content: "Production summary..." },
-  { id: "journal", title: "Journal", number: "05", content: "Journal logs..." },
-];
+const ProfileCard: React.FC<ProfileCardProps> = ({ title, description, imageUrl }) => {
+  return (
+    <div className="flex flex-col">
+      <div className="aspect-[100/117] w-full overflow-hidden">
+        <img
+          src={imageUrl}
+          alt={title}
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.onerror = null; // prevent infinite loop
+            target.src = `https://placehold.co/600x450/1a1a1a/ffffff?text=Image+Unavailable`;
+          }}
+        />
+      </div>
+      <div className="pt-5">
+        <h3 className="text-xl font-medium tracking-tight text-white">{title}</h3>
+        <p className="text-base text-gray-400 mt-2 leading-relaxed">{description}</p>
+      </div>
+    </div>
+  );
+};
 
-export default function MissionProfiles() {
-  const containerRef = useRef(null);
+// The main component, updated for paginated horizontal scrolling.
+export default function Dexter1(): JSX.Element {
+  const containerRef = useRef<HTMLElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  // Use a ref to track the current page index without causing re-renders.
+  const currentIndex = useRef(0);
+
+  const profiles: ProfileCardProps[] = [
+    {
+      title: "Border Surveillance",
+      description: "Provides continuous situational awareness for persistent monitoring and threat detection.",
+      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/641de74487cf8d3c116abd5924ab673367516bb2-2000x2500.jpg?auto=format&fit=max&w=1920&q=90",
+    },
+    {
+      title: "Disaster Response",
+      description: "Rapidly deliver support for real-time situational awareness and coordination in disaster relief operations.",
+      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/9ac1a07d3b84827ba687a8a9281ed48b31458e49-1920x1080.png?auto=format&fit=max&w=1920&q=90",
+    },
+    {
+      title: "ISR Missions",
+      description: "Delivers high-resolution intelligence and real-time situational awareness for critical ISR missions.",
+      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/8801921308d204efa9bf03a05503df326916b847-3642x2049.png?auto=format&fit=max&w=1920&q=90",
+    },
+    {
+      title: "Disaster Response",
+      description: "Rapidly deliver support for real-time situational awareness and coordination in disaster relief operations.",
+      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/9ac1a07d3b84827ba687a8a9281ed48b31458e49-1920x1080.png?auto=format&fit=max&w=1920&q=90",
+    },
+    {
+      title: "ISR Missions",
+      description: "Delivers high-resolution intelligence and real-time situational awareness for critical ISR missions.",
+      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/8801921308d204efa9bf03a05503df326916b847-3642x2049.png?auto=format&fit=max&w=1920&q=90",
+    },
+    {
+      title: "Disaster Response",
+      description: "Rapidly deliver support for real-time situational awareness and coordination in disaster relief operations.",
+      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/9ac1a07d3b84827ba687a8a9281ed48b31458e49-1920x1080.png?auto=format&fit=max&w=1920&q=90",
+    },
+    {
+      title: "ISR Missions",
+      description: "Delivers high-resolution intelligence and real-time situational awareness for critical ISR missions.",
+      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/8801921308d204efa9bf03a05503df326916b847-3642x2049.png?auto=format&fit=max&w=1920&q=90",
+    },
+    {
+      title: "Disaster Response",
+      description: "Rapidly deliver support for real-time situational awareness and coordination in disaster relief operations.",
+      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/9ac1a07d3b84827ba687a8a9281ed48b31458e49-1920x1080.png?auto=format&fit=max&w=1920&q=90",
+    },
+    {
+      title: "ISR Missions",
+      description: "Delivers high-resolution intelligence and real-time situational awareness for critical ISR missions.",
+      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/8801921308d204efa9bf03a05503df326916b847-3642x2049.png?auto=format&fit=max&w=1920&q=90",
+    },
+  ];
 
   useEffect(() => {
-    const scroll = new LocomotiveScroll({
-      el: containerRef.current as HTMLElement,
-      smooth: true,
-      direction: "horizontal",
-    });
+    const container = containerRef.current;
+    const track = trackRef.current;
+    if (!container || !track) return;
 
-    const blocks = document.querySelectorAll(".block[data-block-section]");
+    // A flag to prevent rapid-fire scrolling while a transition is active.
+    let isScrolling = false;
+    const scrollCooldown = 700; // Must be same or more than the CSS transition duration.
 
-    scroll.on("scroll", () => {
-      blocks.forEach((block) => {
-        const attr = block.getAttribute("data-block-section");
-        const section = document.querySelector(
-          `section[data-block-section="${attr}"]`
-        ) as HTMLElement;
+    const pages = Array.from(track.children) as HTMLElement[];
+    // Calculate the horizontal start position (snap point) for each page.
+    const snapPoints = pages.map(page => page.offsetLeft);
 
-        if (!section) return;
+    const handleWheel = (e: WheelEvent) => {
+      // If a scroll animation is already in progress, do nothing.
+      if (isScrolling) return;
 
-        const rectLeft = section.getBoundingClientRect().left;
-        const blockIndex = Number(attr);
+      const scrollDirection = e.deltaY > 0 ? 1 : -1; // 1 for down/right, -1 for up/left
+      const newIndex = currentIndex.current + scrollDirection;
 
-        if (rectLeft <= block.offsetWidth * blockIndex) {
-          block.classList.add("fixed");
-          block.classList.remove("init", "active");
-          block.setAttribute("style", "");
-        } else if (
-          rectLeft >=
-          window.innerWidth - block.offsetWidth * (sections.length - blockIndex)
-        ) {
-          block.classList.add("init");
-          block.classList.remove("active", "fixed");
-          block.setAttribute("style", "");
-        } else {
-          block.classList.add("active");
-          block.classList.remove("init", "fixed");
-          block.setAttribute("style", `left: ${rectLeft}px`);
-        }
-      });
-    });
+      // Check if the new page index is within the valid range.
+      if (newIndex >= 0 && newIndex < pages.length) {
+        // Set the scrolling flag to true to start the cooldown.
+        isScrolling = true;
+        currentIndex.current = newIndex;
+        // Move the track to the calculated snap point of the new page.
+        track.style.transform = `translateX(-${snapPoints[currentIndex.current]}px)`;
 
-    return () => {
-      scroll.destroy();
+        // After the animation finishes, reset the flag.
+        setTimeout(() => {
+          isScrolling = false;
+        }, scrollCooldown);
+      }
     };
+
+    container.addEventListener('wheel', handleWheel);
+    return () => container.removeEventListener('wheel', handleWheel);
   }, []);
 
   return (
     <>
       <style jsx global>{`
-        html,
-        body {
-          margin: 0;
-          padding: 0;
-          height: 100%;
-          width: 100%;
-          overflow: hidden;
-          background: #a19a8f;
-        }
-
-        [data-scroll-container] {
-          height: 100vh;
-          display: flex;
-          overflow: hidden;
-        }
-
-        .wrap {
-          display: flex;
-          height: 100vh;
-        }
-
-        .section {
-          width: 100vw;
-          flex: 0 0 auto;
-          font-size: 3rem;
-          background: #a19a8f;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        .blocks {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          z-index: 100;
-          pointer-events: none;
-        }
-
-        .block {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 4rem;
-          height: 100%;
-          background: #a19a8f;
-          padding: 2rem 1.25rem;
-          display: flex;
-          align-items: center;
-          flex-direction: column;
-          justify-content: space-between;
-          pointer-events: auto;
-          cursor: pointer;
-          border-left: 0.2rem solid #000;
-          font-weight: 500;
-        }
-
-        .block__title {
-          transform: rotate(-90deg);
-          text-align: right;
-          white-space: nowrap;
-        }
-
-        .block__number {
-          font-size: 1.5rem;
-        }
-
-        .block[data-block-section="2"].init {
-          left: calc(100vw - 16rem);
-        }
-        .block[data-block-section="2"].fixed {
-          left: 4rem;
-        }
-
-        .block[data-block-section="3"].init {
-          left: calc(100vw - 12rem);
-        }
-        .block[data-block-section="3"].fixed {
-          left: 8rem;
-        }
-
-        .block[data-block-section="4"].init {
-          left: calc(100vw - 8rem);
-        }
-        .block[data-block-section="4"].fixed {
-          left: 12rem;
-        }
-
-        .block[data-block-section="5"].init {
-          left: calc(100vw - 4rem);
-        }
-        .block[data-block-section="5"].fixed {
-          left: 16rem;
+        @import url('https://fonts.cdnfonts.com/css/clash-grotesk');
+        .font-clash-grotesk {
+          font-family: 'Clash Grotesk', sans-serif;
         }
       `}</style>
 
-      {/* Sidebar Blocks */}
-      <div className="blocks">
-        {sections.map((section, i) => (
-          <div
-            key={section.id}
-            className="block init"
-            data-block-section={i + 1}
-            data-href={section.id}
-          >
-            <div className="block__title">{section.title}</div>
-            <div className="block__number">{section.number}</div>
-          </div>
-        ))}
-      </div>
+      <section ref={containerRef} className="font-clash-grotesk bg-black text-white w-full h-screen overflow-hidden">
+        {/* The track now has a longer, smoother transition for the page-snap effect. */}
+        <div ref={trackRef} className="flex h-full items-center relative transition-transform duration-700 ease-in-out">
 
-      {/* Locomotive Scroll Container */}
-      <main ref={containerRef} data-scroll-container>
-        <div className="wrap" data-scroll-section>
-          {sections.map((section, i) => (
-            <section
-              key={section.id}
-              id={section.id}
-              className="section"
-              data-block-section={i + 1}
-            >
-              {section.content}
-            </section>
+          {/* Page 1: The Header. It now takes the full screen width to act as a distinct page. */}
+          <div className="flex-shrink-0 w-screen h-full flex items-center justify-center">
+            <div className="text-left w-full max-w-7xl px-8 sm:px-16 lg:px-24">
+              <h1 className="text-7xl font-medium tracking-tight">
+                Mission Profiles
+              </h1>
+              <p className="text-xl text-gray-400 mt-4 max-w-lg">
+                Engineered for reliability in critical scenarios.
+              </p>
+            </div>
+          </div>
+
+          {/* Subsequent Pages: The Profile Cards. We add padding to space them out correctly. */}
+          {profiles.map((profile) => (
+            <div key={profile.title} className="flex-shrink-0 w-[450px] px-10">
+              <ProfileCard
+                title={profile.title}
+                description={profile.description}
+                imageUrl={profile.imageUrl}
+              />
+            </div>
           ))}
         </div>
-      </main>
+      </section>
     </>
   );
 }
