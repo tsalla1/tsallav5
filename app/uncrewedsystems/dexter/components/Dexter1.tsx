@@ -69,21 +69,32 @@ export default function MissionProfiles() {
           margin: 0;
           padding: 0;
           height: 100%;
+          width: 100%;
+          overflow: hidden;
           background: #a19a8f;
+        }
+
+        [data-scroll-container] {
+          height: 100vh;
+          display: flex;
           overflow: hidden;
         }
+
+        .wrap {
+          display: flex;
+          height: 100vh;
+        }
+
         .section {
-          width: 120vw;
-          font-size: 4rem;
+          width: 100vw;
+          flex: 0 0 auto;
+          font-size: 3rem;
           background: #a19a8f;
           display: flex;
           justify-content: center;
           align-items: center;
         }
-        .wrap {
-          display: flex;
-          height: 100vh;
-        }
+
         .blocks {
           position: fixed;
           top: 0;
@@ -93,6 +104,7 @@ export default function MissionProfiles() {
           z-index: 100;
           pointer-events: none;
         }
+
         .block {
           position: absolute;
           top: 0;
@@ -110,32 +122,38 @@ export default function MissionProfiles() {
           border-left: 0.2rem solid #000;
           font-weight: 500;
         }
+
         .block__title {
           transform: rotate(-90deg);
           text-align: right;
           white-space: nowrap;
         }
+
         .block__number {
           font-size: 1.5rem;
         }
+
         .block[data-block-section="2"].init {
           left: calc(100vw - 16rem);
         }
         .block[data-block-section="2"].fixed {
           left: 4rem;
         }
+
         .block[data-block-section="3"].init {
           left: calc(100vw - 12rem);
         }
         .block[data-block-section="3"].fixed {
           left: 8rem;
         }
+
         .block[data-block-section="4"].init {
           left: calc(100vw - 8rem);
         }
         .block[data-block-section="4"].fixed {
           left: 12rem;
         }
+
         .block[data-block-section="5"].init {
           left: calc(100vw - 4rem);
         }
@@ -159,7 +177,7 @@ export default function MissionProfiles() {
         ))}
       </div>
 
-      {/* Scroll Container */}
+      {/* Locomotive Scroll Container */}
       <main ref={containerRef} data-scroll-container>
         <div className="wrap" data-scroll-section>
           {sections.map((section, i) => (
