@@ -1,149 +1,179 @@
-import React, { useRef, useEffect } from 'react';
+// app/mission-profiles/page.tsx
+"use client";
 
-interface ProfileCardProps {
-  title: string;
-  description: string;
-  imageUrl: string;
-}
+import { useEffect, useRef } from "react";
+import LocomotiveScroll from "locomotive-scroll";
+import "locomotive-scroll/dist/locomotive-scroll.css";
 
-const ProfileCard: React.FC<ProfileCardProps> = ({ title, description, imageUrl }) => {
-  return (
-    <div className="flex flex-col w-[300px]">
-      <div className="aspect-[100/117] w-full overflow-hidden">
-        <img
-          src={imageUrl}
-          alt={title}
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.onerror = null;
-            target.src = `https://placehold.co/600x450/1a1a1a/ffffff?text=Image+Unavailable`;
-          }}
-        />
-      </div>
-      <div className="pt-5">
-        <h3 className="text-xl font-medium tracking-tight text-white">{title}</h3>
-        <p className="text-base text-gray-400 mt-2 leading-relaxed">{description}</p>
-      </div>
-    </div>
-  );
-};
+const sections = [
+  { id: "home", title: "Home", number: "01", content: "Home content here..." },
+  { id: "collection", title: "Collection", number: "02", content: "Collection details..." },
+  { id: "material", title: "Material", number: "03", content: "Material info..." },
+  { id: "production", title: "Production", number: "04", content: "Production summary..." },
+  { id: "journal", title: "Journal", number: "05", content: "Journal logs..." },
+];
 
-export default function Dexter1(): JSX.Element {
-  const containerRef = useRef<HTMLElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const currentIndex = useRef(0);
-
-  const profiles: ProfileCardProps[] = [
-    {
-      title: "Border Surveillance",
-      description: "Provides continuous situational awareness for persistent monitoring and threat detection.",
-      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/641de74487cf8d3c116abd5924ab673367516bb2-2000x2500.jpg?auto=format&fit=max&w=1920&q=90",
-    },
-    {
-      title: "Disaster Response",
-      description: "Rapidly deliver support for real-time situational awareness and coordination in disaster relief operations.",
-      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/9ac1a07d3b84827ba687a8a9281ed48b31458e49-1920x1080.png?auto=format&fit=max&w=1920&q=90",
-    },
-    {
-      title: "ISR Missions",
-      description: "Delivers high-resolution intelligence and real-time situational awareness for critical ISR missions.",
-      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/8801921308d204efa9bf03a05503df326916b847-3642x2049.png?auto=format&fit=max&w=1920&q=90",
-    },
-    {
-      title: "Urban Recon",
-      description: "Navigate complex urban terrain with precision and stealth.",
-      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/8801921308d204efa9bf03a05503df326916b847-3642x2049.png?auto=format&fit=max&w=1920&q=90",
-    },
-    {
-      title: "Environmental Monitoring",
-      description: "Track changes in forests, oceans, and deserts to inform policy and response.",
-      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/9ac1a07d3b84827ba687a8a9281ed48b31458e49-1920x1080.png?auto=format&fit=max&w=1920&q=90",
-    },
-    {
-      title: "Tactical Edge",
-      description: "Designed to operate in GPS-denied and comms-contested environments.",
-      imageUrl: "https://cdn.sanity.io/images/z5s3oquj/production/641de74487cf8d3c116abd5924ab673367516bb2-2000x2500.jpg?auto=format&fit=max&w=1920&q=90",
-    },
-  ];
-
-  // Group profiles into pages of 3
-  const pageSize = 3;
-  const profilePages = [];
-  for (let i = 0; i < profiles.length; i += pageSize) {
-    profilePages.push(profiles.slice(i, i + pageSize));
-  }
+export default function MissionProfiles() {
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    const container = containerRef.current;
-    const track = trackRef.current;
-    if (!container || !track) return;
+    const scroll = new LocomotiveScroll({
+      el: containerRef.current as HTMLElement,
+      smooth: true,
+      direction: "horizontal",
+    });
 
-    let isScrolling = false;
-    const scrollCooldown = 700;
+    const blocks = document.querySelectorAll(".block[data-block-section]");
 
-    const handleWheel = (e: WheelEvent) => {
-      if (isScrolling) return;
+    scroll.on("scroll", () => {
+      blocks.forEach((block) => {
+        const attr = block.getAttribute("data-block-section");
+        const section = document.querySelector(
+          `section[data-block-section="${attr}"]`
+        ) as HTMLElement;
 
-      const direction = e.deltaY > 0 ? 1 : -1;
-      const newIndex = currentIndex.current + direction;
+        if (!section) return;
 
-      if (newIndex >= 0 && newIndex < profilePages.length + 1) {
-        isScrolling = true;
-        currentIndex.current = newIndex;
+        const rectLeft = section.getBoundingClientRect().left;
+        const blockIndex = Number(attr);
 
-        const newScroll = newIndex * window.innerWidth;
-        track.style.transform = `translateX(-${newScroll}px)`;
+        if (rectLeft <= block.offsetWidth * blockIndex) {
+          block.classList.add("fixed");
+          block.classList.remove("init", "active");
+          block.setAttribute("style", "");
+        } else if (
+          rectLeft >=
+          window.innerWidth - block.offsetWidth * (sections.length - blockIndex)
+        ) {
+          block.classList.add("init");
+          block.classList.remove("active", "fixed");
+          block.setAttribute("style", "");
+        } else {
+          block.classList.add("active");
+          block.classList.remove("init", "fixed");
+          block.setAttribute("style", `left: ${rectLeft}px`);
+        }
+      });
+    });
 
-        setTimeout(() => {
-          isScrolling = false;
-        }, scrollCooldown);
-      }
+    return () => {
+      scroll.destroy();
     };
-
-    container.addEventListener("wheel", handleWheel);
-    return () => container.removeEventListener("wheel", handleWheel);
-  }, [profilePages.length]);
+  }, []);
 
   return (
     <>
       <style jsx global>{`
-        @import url('https://fonts.cdnfonts.com/css/clash-grotesk');
-        .font-clash-grotesk {
-          font-family: 'Clash Grotesk', sans-serif;
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+          height: 100%;
+          background: #a19a8f;
+          overflow: hidden;
+        }
+        .section {
+          width: 120vw;
+          font-size: 4rem;
+          background: #a19a8f;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .wrap {
+          display: flex;
+          height: 100vh;
+        }
+        .blocks {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 100;
+          pointer-events: none;
+        }
+        .block {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 4rem;
+          height: 100%;
+          background: #a19a8f;
+          padding: 2rem 1.25rem;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: space-between;
+          pointer-events: auto;
+          cursor: pointer;
+          border-left: 0.2rem solid #000;
+          font-weight: 500;
+        }
+        .block__title {
+          transform: rotate(-90deg);
+          text-align: right;
+          white-space: nowrap;
+        }
+        .block__number {
+          font-size: 1.5rem;
+        }
+        .block[data-block-section="2"].init {
+          left: calc(100vw - 16rem);
+        }
+        .block[data-block-section="2"].fixed {
+          left: 4rem;
+        }
+        .block[data-block-section="3"].init {
+          left: calc(100vw - 12rem);
+        }
+        .block[data-block-section="3"].fixed {
+          left: 8rem;
+        }
+        .block[data-block-section="4"].init {
+          left: calc(100vw - 8rem);
+        }
+        .block[data-block-section="4"].fixed {
+          left: 12rem;
+        }
+        .block[data-block-section="5"].init {
+          left: calc(100vw - 4rem);
+        }
+        .block[data-block-section="5"].fixed {
+          left: 16rem;
         }
       `}</style>
 
-      <section ref={containerRef} className="font-clash-grotesk bg-black text-white w-full h-screen overflow-hidden">
-        <div ref={trackRef} className="flex h-full transition-transform duration-700 ease-in-out">
-          {/* First Page: Header */}
-          <div className="flex-shrink-0 w-screen h-full flex items-center justify-center px-12">
-            <div className="max-w-5xl">
-              <h1 className="text-6xl font-medium tracking-tight">Mission Profiles</h1>
-              <p className="text-xl text-gray-400 mt-6 max-w-xl">
-                Engineered for reliability in critical scenarios.
-              </p>
-            </div>
+      {/* Sidebar Blocks */}
+      <div className="blocks">
+        {sections.map((section, i) => (
+          <div
+            key={section.id}
+            className="block init"
+            data-block-section={i + 1}
+            data-href={section.id}
+          >
+            <div className="block__title">{section.title}</div>
+            <div className="block__number">{section.number}</div>
           </div>
+        ))}
+      </div>
 
-          {/* Profile Card Pages */}
-          {profilePages.map((group, idx) => (
-            <div
-              key={idx}
-              className="flex-shrink-0 w-screen h-full flex items-center justify-center gap-10"
+      {/* Scroll Container */}
+      <main ref={containerRef} data-scroll-container>
+        <div className="wrap" data-scroll-section>
+          {sections.map((section, i) => (
+            <section
+              key={section.id}
+              id={section.id}
+              className="section"
+              data-block-section={i + 1}
             >
-              {group.map((profile) => (
-                <ProfileCard
-                  key={profile.title}
-                  title={profile.title}
-                  description={profile.description}
-                  imageUrl={profile.imageUrl}
-                />
-              ))}
-            </div>
+              {section.content}
+            </section>
           ))}
         </div>
-      </section>
+      </main>
     </>
   );
 }
